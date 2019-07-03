@@ -221,7 +221,7 @@ module "iks" {
 | region |  Region for the cluster to be created in.  | string | `""` | yes |
 | resource_group_id | The ID of the resource group. | string | `""` | yes |
 | tags | List of associated tags for the created cluster. | `<list>` | `["terraform"]` | no |
-| worker_pools_num | Enter the number of additional worker pools you want to create. (Enter 0 if you only need the default pool created) | int | `1` | no |
+| worker_pools_num | Enter the number of additional worker pools you want to create. (Enter 0 if you only need the default pool created) | int | `0` | no |
 | worker_pool_params | This is a map for the worker specs. | `<map>` | `{ tag=["small"], machine_flavor=["u2c.2x4"], hardware=["shared"], workers=["1"], disk_encryption=["false"]}` | no |
 | zones | List of zones attached to the worker pools. | `<list>` | `["dal10"]` | yes |
 
