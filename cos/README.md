@@ -25,7 +25,7 @@ module "cos" {
 }
 ```
 
-Alternatively, you can clone this repository and create your own "main.tf" in the root folder and give `source=cos` , where source refers to local path of iks folder"
+Alternatively, you can clone this repository and create your own "main.tf" in the root folder and give `source=cos` , where source refers to local path of cos folder"
 
 ```hcl
 module "cos" {
