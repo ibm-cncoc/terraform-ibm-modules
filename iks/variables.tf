@@ -133,7 +133,7 @@ variable "create_keyprotect" {
 
 variable "ibm_bx_api_key" {
   type        = "string"
-  default     ="dummy"
+  default     =""
 }
 
 

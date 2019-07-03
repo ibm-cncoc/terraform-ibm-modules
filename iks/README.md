@@ -21,18 +21,18 @@ To clone over SSH, use the following form:
 
 ```hcl
 module "iks" {
-  source = "git::github.com:ibm-client-success/terraform-ibm-modules.git//iks"
+  "source = "git::github.com:ibm-client-success/terraform-ibm-modules.git//iks"
 }
 ```
 
-Alternatively, you can clone this repository and create your own "main.tf" in the root folder and give `source=iks` , where source refers to local path of iks folder"
+Alternatively, You can clone this repository and create your own "main.tf" in the root folder, like sample_main.tf, and give the local path as "iks" 
 
 ```hcl
 module "iks" {
-  source = "iks"
+  "source = "iks"
 }
 ```
-Refer to [sample_main.tf](../sample_main.tf), for a sample file
+
 
 ## Usage
 
@@ -78,6 +78,22 @@ module "iks" {
   ibm_bx_api_key    = "abc123"
   
 }
+
+output "cluster_id" {
+  value       = "${module.iks.cluster_id}"
+}
+
+output "cluster_name" {
+  value       = "${module.iks.cluster_name}"
+}
+
+output "keyprotect_id" {
+  value       = "${module.iks.keyprotect_id}"
+}
+
+output "keyprotect_name" {
+  value       = "${module.iks.keyprotect_name}"
+}
 ```
 
 ### Example of Multi-Zone cluster
@@ -102,11 +118,11 @@ module "iks" {
   
   create_private_vlan = false
   create_public_vlan  = false
-  public_vlan = {
+  public_vlan{
         ids = ["0010","0012"]
         router_hostnames = ["xyz"]
     } 
-  private_vlan = {
+  private_vlan{
         ids = ["0010","0012"]
         router_hostnames = ["abc"]
     }
@@ -125,6 +141,22 @@ module "iks" {
   kp_rootkey        = {description="", payload = ""} # payload = "<base64 encoded key>" to provide your own key
   ibm_bx_api_key    = "abc123"
 
+}
+
+output "cluster_id" {
+  value       = "${module.iks.cluster_id}"
+}
+
+output "cluster_name" {
+  value       = "${module.iks.cluster_name}"
+}
+
+output "keyprotect_id" {
+  value       = "${module.iks.keyprotect_id}"
+}
+
+output "keyprotect_name" {
+  value       = "${module.iks.keyprotect_name}"
 }
 ```
 
@@ -189,7 +221,23 @@ module "iks" {
   kp_plan           = "${var.kp_plan}"
   kp_rootkey        = "${var.kp_rootkey}"
   ibm_bx_api_key    = "${var.ibm_bx_api_key}"
-  
+
+}
+
+output "cluster_id" {
+  value       = "${module.iks.cluster_id}"
+}
+
+output "cluster_name" {
+  value       = "${module.iks.cluster_name}"
+}
+
+output "keyprotect_id" {
+  value       = "${module.iks.keyprotect_id}"
+}
+
+output "keyprotect_name" {
+  value       = "${module.iks.keyprotect_name}"
 }
 ```
 
@@ -203,7 +251,7 @@ module "iks" {
 |------|-------------|:----:|:-----:|:-----:|
 | account_guid | The GUID for the IBM Cloud account associated with the cluster. | string | `""` | yes |
 | billing | The billing type for the instance. Accepted values are hourly or monthly. | string | `"hourly"` | no |
-| cluster_name | The name of the cluster. | string | `dev` | no |
+| cluster_name | The name of the cluster. | string | `""` | no |
 | create_private_vlan | Create new private vlans if set true or use existing ones if set false. | boolean | true | no |
 | create_public_vlan | Create new public vlans if set true or use existing ones if set false. | boolean | true | no |
 | default_pool_size | The number of workers created under the default worker pool. | int | `1` | yes |
@@ -213,12 +261,12 @@ module "iks" {
 | kp_name | Name of KP resource to be created. | string | `"keyprotect"` | no |
 | kp_plan | KP plan type. | string | `"tiered-pricing"` | no |
 | kp_rootkey | User defined KP root key to be created. If not defined, then a random root key will be generated. | `<map>` | `{"description" = "root key", "payload" = ""}` | no |
-| kube_version | The desired Kubernetes version of the created cluster. | string | `1.13.6` | yes |
+| kube_version | The desired Kubernetes version of the created cluster. | string | `1.13.7` | yes |
 | machine_type | The machine type of the worker nodes. | string | `"u2c.2x4"` | yes |
-| pfx | Prefix appended to start of the IKS cluster name. | string | `""` | no |
-| public_vlan | If you chose not to create VLANs, provide a list of public vlans on the zones your workers are distributed on (the list of vlans you provide here should have a one to one mapping with the zones list. | `<map>` | `""` | no |
-| private_vlan | If you chose not to create VLANs, provide a list of private vlans on the zones your workers are distributed on (the list of vlans you provide here should have a one to one mapping with the zones list. | `<map>` | `""` | no |
-| region |  Region for the cluster to be created in.  | string | `""` | yes |
+| pfx | Prefix appended to start of the IKS cluster name. | string | `"tf"` | no |
+| public_vlan | If you chose not to create VLANs, provide a list of public vlans on the zones your workers are distributed on (the list of vlans you provide here should have a one to one mapping with the zones list. | `<map>` | `{ids = ["-1"] router_hostnames = [""]}` | no |
+| private_vlan | If you chose not to create VLANs, provide a list of private vlans on the zones your workers are distributed on (the list of vlans you provide here should have a one to one mapping with the zones list. | `<map>` | `{ids = ["-1"] router_hostnames = [""]}` | no |
+| region |  Region for the cluster to be created in.  | string | `"us-south"` | yes |
 | resource_group_id | The ID of the resource group. | string | `""` | yes |
 | tags | List of associated tags for the created cluster. | `<list>` | `["terraform"]` | no |
 | worker_pools_num | Enter the number of additional worker pools you want to create. (Enter 0 if you only need the default pool created) | int | `0` | no |

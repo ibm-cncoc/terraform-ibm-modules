@@ -31,7 +31,7 @@ variable "cos_location" {
 variable "cos_tags" {
   type = "list"
   description = "Tags for service"  
-  default = ["tf-test"]
+  default = ["terraform"]
 }
 
 variable "cos_parameters" {

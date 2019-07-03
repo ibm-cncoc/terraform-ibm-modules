@@ -21,7 +21,7 @@ data "ibm_account" "account" {
 # ############## IKS ##################
 
 module "iks" {
-  source = "git::github.com:ibm-client-success/terraform-ibm-modules.git//iks"
+  source = "github.com/ibm-client-success/terraform-ibm-modules.git//iks"
 
   account_guid      = "${data.ibm_account.account.id}"
   resource_group_id = "${data.ibm_resource_group.rg.id}"
@@ -72,7 +72,7 @@ output "keyprotect_name" {
 
 ############### COS ################
 module "cos" {
-  source = "git::github.com:ibm-client-success/terraform-ibm-modules.git//cos"
+  source = "github.com/ibm-client-success/terraform-ibm-modules.git//cos"
   
   pfx                   = "${var.pfx}"
   cos_name              = "${var.cos_name}"

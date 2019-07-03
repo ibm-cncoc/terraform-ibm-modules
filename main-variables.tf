@@ -209,4 +209,3 @@ variable "cos_service_credentials_role" {
   description = "The role defines permitted actions when accessing the COS service"
   default = "Reader" # possible values: Reader, Writer, Manager, Content Reader
 }
-
