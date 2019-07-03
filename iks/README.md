@@ -102,11 +102,11 @@ module "iks" {
   
   create_private_vlan = false
   create_public_vlan  = false
-  public_vlan{
+  public_vlan = {
         ids = ["0010","0012"]
         router_hostnames = ["xyz"]
     } 
-  private_vlan{
+  private_vlan = {
         ids = ["0010","0012"]
         router_hostnames = ["abc"]
     }
