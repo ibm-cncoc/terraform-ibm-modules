@@ -1,8 +1,4 @@
 #!/usr/bin/env bash
-# CLUSTER="scorpion-test-cluster"
-# REGION="us-south"
-# KEYPROTECT="crn:v1:bluemix:public:kms:us-south:a/ad5d072102214f4395eab22f03bbb2f9:96a60bea-8782-4826-8194-ca8b464877f2::"
-# APIKEY="T3DgZVxh7iom7kT3V3iUffW8gYKFYlhh8I6vJoM-yjef"
 echo "Cluster:${CLUSTER}"
 echo "Region:${REGION}"
 echo "KEYPROTECT INSTANCE:${KEYPROTECT}"
