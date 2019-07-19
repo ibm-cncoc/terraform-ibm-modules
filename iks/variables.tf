@@ -12,7 +12,7 @@ variable "billing" {
 
 variable "pfx" {
   type        = "string"
-  description = "name prefix for resources created by this plan"
+  description = "add prefix to the name of the resource created by this module (This helps you identify the resources created using this module)"
   default     = "tf"
 }
 
@@ -36,8 +36,8 @@ variable "cluster_name" {
 
 variable "kube_version" {
   type        = "string"
-  description = "kube version"
-  default     = "1.13.7"
+  description = "The Kubernetes version for the cluster master node. This value is optional. When the version is not specified, the cluster is created with the default of supported Kubernetes versions. To see available versions, run ibmcloud ks versions."
+  default     = ""
 }
 
 variable "hardware" {
@@ -62,15 +62,16 @@ variable "disk_encryption" {
   default     = true
 }
 
-variable "resource_group_id" {
-  type        = "string"
-  description = "The ID of the resource group"
+variable "resource_group" {
+    type = "string"
+    description = "resource group name where you want to create the resource"
+    default = "default"
 }
 
-variable "account_guid" {
-  type        = "string"
-  description = "The ID of the cloud account"
-}
+# variable "account_guid" {
+#   type        = "string"
+#   description = "The ID of the cloud account"
+# }
 
 
 
@@ -133,7 +134,7 @@ variable "create_keyprotect" {
 
 variable "ibm_bx_api_key" {
   type        = "string"
-  default     =""
+  default     = ""
 }
 
 
@@ -151,13 +152,20 @@ variable "kp_plan" {
 
 variable "kp_rootkey" {
   type        = "map"
-  description = "key protect instance info"
+  description = "key protect key info"
 
   default = {
     "description" = "root key"
-
+    # The key material that you want to store and manage in the service.
     # Leave payload blank to generate root key
-    # set payload to BYO-key file with AES 128/192/256 bits
-    "payload" = ""
+    # If you are importing the key, provide a base64 encoded payload
+    # AES key size should be 128, 192 or 256 bits
+    "payload" = "" 
   }
+}
+
+variable "delete_keys" {
+  type = "string"
+  default = false
+  description = "Flag to choose if kp keys should be deleted or not "
 }

@@ -8,38 +8,27 @@ variable "region" {
   default     = "us-south"
 }
 
-variable "cluster_name" {
-  type        = "string"
-  description = "name of the cluster"
-}
-
 variable "resource_group" {
     type = "string"
     description = "ibm cloud resoure group"
-
+    default     = "default"
 }
 
 variable "pfx" {
   type        = "string"
-  description = "name prefix for resources created by this plan (This helps you identify the resources created using this plan)"
+  description = "add prefix to the name of the resource created by this module (This helps you identify the resources created using this module)"
   default     = "tf"
 }
 
 variable "tags" {
   type        = "list"
   description = "Tags for service"
-  default     = ["terraform", "test"]
+  default     = ["terraform"]
 }
 
-
-variable "cf_org" {
-  type    = "string"
-  description = "ibm cloud cf org name"
-}
-
-variable "cf_space" {
-  type = "string"
-  description = "ibm cloud cf space name"
+variable "cluster_name" {
+  type        = "string"
+  description = "name of the cluster"
 }
 
 variable "billing" {
@@ -59,8 +48,8 @@ variable "zones" {
 
 variable "kube_version" {
   type        = "string"
-  description = "kube version"
-  default     = "1.13.7"
+  description = "The Kubernetes version for the cluster master node. When the version is not specified, the cluster is created with the default of supported Kubernetes versions. To see available versions, run ibmcloud ks versions."
+  default     = ""
 }
 
 variable "hardware" {
@@ -169,43 +158,10 @@ variable "kp_rootkey" {
   }
 }
 
-############## COS ######################
-variable "cos_name"{
-    type = "string"
-    description = "name of the cloud object storage instance"
-}
-
-variable "cos_plan" {
-    description = "Current plan"
-    type = "string"
-    default = "standard"
-}
-
-variable "cos_location" {
-    type = "string"
-    description = "location of your storage instance"
-    default = "global"
-}
-
-variable "cos_parameters" {
-  type        = "map"
-  description = "Arbitrary parameters to create instance"
-  default     = {
-    "HMAC" = true
-  }
-}
-
-variable "cos_resource_key_parameters" {
-  type        = "map"
-  description = "Arbitrary parameters to create resource key"
-  default     = {
-    "HMAC" = true
-    "active" = true
-  }
-}
-
-variable "cos_service_credentials_role" {
+variable "delete_keys" {
   type = "string"
-  description = "The role defines permitted actions when accessing the COS service"
-  default = "Reader" # possible values: Reader, Writer, Manager, Content Reader
+  default = false
+  description = "Flag to choose if kp keys should be deleted or not "
 }
+
+

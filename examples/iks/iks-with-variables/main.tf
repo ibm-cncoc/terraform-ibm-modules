@@ -4,27 +4,11 @@ provider "ibm" {
   softlayer_api_key  = "${var.ibm_sl_api_key}"
 }
 
-data "ibm_resource_group" "rg" {
-  name = "${var.resource_group}"
-}
-
-data "ibm_org" "org" {
-  org = "${var.cf_org}"
-}
-
-data "ibm_account" "account" {
-  org_guid = "${data.ibm_org.org.id}"
-}
-
-############### Modules ##################
-
-# ############## IKS ##################
-
+####### Call the module with variable arguments #######
 module "iks" {
-  source = "github.com/ibm-client-success/terraform-ibm-modules.git//iks"
-
-  account_guid      = "${data.ibm_account.account.id}"
-  resource_group_id = "${data.ibm_resource_group.rg.id}"
+  source = "../../../iks"  # use if module is cloned locally
+  # source = "github.com/ibm-client-success/terraform-ibm-modules.git//iks"
+  resource_group    = "${var.resource_group}"
   billing           = "${var.billing}"
   cluster_name      = "${var.cluster_name}"
   default_pool_size = "${var.default_pool_size}"
@@ -49,6 +33,7 @@ module "iks" {
   kp_name           = "${var.kp_name}"
   kp_plan           = "${var.kp_plan}"
   kp_rootkey        = "${var.kp_rootkey}"
+  delete_keys       = "${var.delete_keys}"
   ibm_bx_api_key    = "${var.ibm_bx_api_key}" 
   
 }
@@ -67,32 +52,4 @@ output "keyprotect_id" {
 
 output "keyprotect_name" {
   value       = "${module.iks.keyprotect_name}"
-}
-
-
-############### COS ################
-module "cos" {
-  source = "github.com/ibm-client-success/terraform-ibm-modules.git//cos"
-  
-  pfx                   = "${var.pfx}"
-  cos_name              = "${var.cos_name}"
-  cos_plan              = "${var.cos_plan}"
-  cos_location          = "${var.cos_location}"
-  cos_tags              = ["${var.tags}"]
-  resource_group_id     = "${data.ibm_resource_group.rg.id}"
-  cos_parameters        = "${var.cos_parameters}"
-  cos_resource_key_parameters = "${var.cos_resource_key_parameters}"
-  cos_service_credentials_role    = "${var.cos_service_credentials_role}"
-}
-
-output "cos_instance_status" {
-    value = "${module.cos.cos_instance_status}"
-}
-
-output "cos_instance_name" {
-    value = "${module.cos.cos_instance_name}"
-}
-
-output "cos_instance_id" {
-    value = "${module.cos.cos_instance_id}"
 }

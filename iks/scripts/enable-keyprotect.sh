@@ -26,5 +26,8 @@ ROOT_KEY=$(curl -X GET \
 
 echo "ROOTKEY with ID: ${ROOT_KEY} associated with Key Protect instance ID: ${PARSED_KEYPROTECT_ID} will be used for encryption"
 
+# Login to ibmcloud account using apikey and target right resource group and region
+ibmcloud login --apikey ${APIKEY} -g ${RESOURCE_GROUP_ID} -r ${REGION}
+
 # Enable Key Protect on cluster using root key retrieved above
 ibmcloud ks key-protect-enable --cluster $CLUSTER --key-protect-url $REGION.kms.cloud.ibm.com --key-protect-instance ${PARSED_KEYPROTECT_ID} --crk $ROOT_KEY

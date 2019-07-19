@@ -1,3 +1,6 @@
+data "ibm_resource_group" "rg" {
+  name = "${var.resource_group}"
+}
 
 # # Cloud Object Storage
 resource "ibm_resource_instance" "cos" {
@@ -6,7 +9,7 @@ resource "ibm_resource_instance" "cos" {
   plan              = "${var.cos_plan}"
   location          = "${var.cos_location}"
   tags              = ["${var.cos_tags}"]
-  resource_group_id = "${var.resource_group_id}"
+  resource_group_id = "${data.ibm_resource_group.rg.id}"
   parameters = "${var.cos_parameters}"
   //User can increase timeouts 
   timeouts {

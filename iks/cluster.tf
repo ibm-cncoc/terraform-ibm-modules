@@ -1,10 +1,12 @@
-
+data "ibm_resource_group" "rg" {
+  name = "${var.resource_group}"
+}
 
 resource "ibm_container_cluster" "cluster" {
   name              = "${var.pfx}-${var.cluster_name}"
   region            = "${var.region}"
   datacenter        = "${var.zones[0]}"
-  resource_group_id = "${var.resource_group_id}"
+  resource_group_id = "${data.ibm_resource_group.rg.id}"
 
   private_vlan_id = "${element(local.private_vlan_ids,0)}"
   public_vlan_id  = "${element(local.public_vlan_ids,0)}"
@@ -27,15 +29,14 @@ resource "ibm_container_cluster" "cluster" {
 
 
 data "ibm_container_cluster_config" "ibmcluster_config" {
-  account_guid      = "${var.account_guid}"
   cluster_name_id   = "${ibm_container_cluster.cluster.name}" # Use cluster name. Using "id" may give errors while initializing the kube provider, because "id" is a computed value
-  config_dir        = "./"
+  config_dir        = "${path.module}"
   download          = true
-  resource_group_id = "${var.resource_group_id}"
+  resource_group_id = "${data.ibm_resource_group.rg.id}"
 }
 
 locals {
-  cluster_config_path = "${data.ibm_container_cluster_config.ibmcluster_config.config_dir}${sha1("${data.ibm_container_cluster_config.ibmcluster_config.cluster_name_id}")}_${data.ibm_container_cluster_config.ibmcluster_config.cluster_name_id}_k8sconfig/config.yml"
+  cluster_config_path = "${data.ibm_container_cluster_config.ibmcluster_config.config_dir}/${sha1("${data.ibm_container_cluster_config.ibmcluster_config.cluster_name_id}")}_${data.ibm_container_cluster_config.ibmcluster_config.cluster_name_id}_k8sconfig/config.yml"
 }
 
 output "cluster-config-path" {
@@ -62,14 +63,9 @@ resource "null_resource" "check_cluster_status" {
   provisioner "local-exec" {
     command = <<EOT
     sleep 10
-    export BX_APIKEY="${var.ibm_bx_api_key}"
-    export RESOURCE_GROUP_ID="${var.resource_group_id}"
-    export ACCOUNT_ID="${var.account_guid}"
-    export CLUSTER_REGION="${var.region}"
-    export CLUSTER_NAME="${ibm_container_cluster.cluster.name}"
     pip install requests
     pip install datetime
-    python ./iks/scripts/check_clusterstatus.py
+    python ${path.module}/scripts/check_clusterstatus.py --apikey "${var.ibm_bx_api_key}" --rgid "${data.ibm_resource_group.rg.id}" --region "${var.region}" --cluster "${ibm_container_cluster.cluster.name}"
 EOT
   }
 

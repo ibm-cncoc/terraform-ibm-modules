@@ -2,13 +2,30 @@ import requests
 import json
 import os
 import time
+import sys,argparse
 from datetime import datetime
 
 
-def get_token():
+parser=argparse.ArgumentParser()
 
-    
-    api_key         =   os.environ['BX_APIKEY']
+parser.add_argument('--apikey', help='IBM Cloud API Key',required=True)
+parser.add_argument('--rgid', help='Resource group ID',required=True)
+parser.add_argument('--region', help='Region of cluster',required=True)
+parser.add_argument('--cluster', help='name of the cluster',required=True)
+
+
+# Read supplied arguments
+args    =   parser.parse_args()
+
+api_key             =   args.apikey
+resource_group_id   =   args.rgid
+region              =   args.region
+cluster             =   args.cluster
+
+
+################# Get IAM token ################
+
+def get_token(api_key):
     get_token_url   =   'https://iam.cloud.ibm.com/identity/token'
     headers         =   { "Accept" : "application/json" , "Content-Type" : "application/x-www-form-urlencoded"}
     params          =   { "grant_type" :   'urn:ibm:params:oauth:grant-type:apikey',
@@ -16,16 +33,14 @@ def get_token():
     r1              =   requests.post(get_token_url,headers=headers,params=params)
     token   =   r1.json()['access_token']
     return token
-token = get_token()
+###################################################
 
-account =  os.environ['ACCOUNT_ID'] 
-resource_group_id = os.environ['RESOURCE_GROUP_ID'] 
-region = os.environ['CLUSTER_REGION']
-cluster = os.environ['CLUSTER_NAME'] 
+token = get_token(api_key)
+ 
 get_cluster_url = 'https://containers.bluemix.net/v1/clusters/'+cluster
 headers={   "Authorization":"Bearer "+token , 
             "X-Region": region,
-            "Account":account,
+            #"Account":account,
             "X-Auth-Resource-Group": resource_group_id,
 
 }
@@ -59,10 +74,10 @@ while(time.time() < timeout):
     elif r.status_code ==  401:
         print("Status Code: ",r.status_code)
         print("Reason: ",r.reason)
-        token = get_token()
+        token = get_token(api_key)
         headers =    {"Authorization":"Bearer "+token , 
             "X-Region": region,
-            "Account":account,
+            # "Account":account,
             "X-Auth-Resource-Group": resource_group_id,
         }
         continue

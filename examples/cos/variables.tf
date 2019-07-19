@@ -1,8 +1,15 @@
+variable ibm_bx_api_key {}
+
+variable "region" {
+  type        = "string"
+  description = "region"
+  default     = "us-south"
+}
 
 variable "resource_group" {
     type = "string"
-    description = "resource group name where you want to create the resource"
-    default = "default"
+    description = "ibm cloud resoure group"
+    default     = "default"
 }
 
 variable "pfx" {
@@ -11,27 +18,28 @@ variable "pfx" {
   default     = "tf"
 }
 
-variable "cos_name" {
+variable "tags" {
+  type        = "list"
+  description = "Tags for service"
+  default     = ["terraform"]
+}
+
+
+variable "cos_name"{
     type = "string"
     description = "name of the cloud object storage instance"
 }
 
 variable "cos_plan" {
+    description = "Current plan"
     type = "string"
-    description = "Current plan for COS"
     default = "standard"
 }
 
 variable "cos_location" {
     type = "string"
-    description ="Location for COS"
+    description = "location of your storage instance"
     default = "global"
-}
-
-variable "cos_tags" {
-  type = "list"
-  description = "Tags for service"  
-  default = ["terraform"]
 }
 
 variable "cos_parameters" {
@@ -39,7 +47,6 @@ variable "cos_parameters" {
   description = "Arbitrary parameters to create instance"
   default     = {
     "HMAC" = true
-
   }
 }
 
@@ -48,6 +55,7 @@ variable "cos_resource_key_parameters" {
   description = "Arbitrary parameters to create resource key"
   default     = {
     "HMAC" = true
+    "active" = true
   }
 }
 
@@ -56,4 +64,3 @@ variable "cos_service_credentials_role" {
   description = "The role defines permitted actions when accessing the COS service"
   default = "Reader" # possible values: Reader, Writer, Manager, Content Reader
 }
-

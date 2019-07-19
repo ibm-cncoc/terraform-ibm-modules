@@ -1,7 +1,7 @@
 resource "ibm_container_worker_pool" "pool" {
   count             = "${var.worker_pools_num}"
   region            = "${var.region}"
-  resource_group_id = "${var.resource_group_id}"
+  resource_group_id = "${data.ibm_resource_group.rg.id}"
   cluster           = "${ibm_container_cluster.cluster.name}"
 
   worker_pool_name  = "${var.pfx}-${element(var.worker_pool_params["tag"], count.index)}-${count.index}"
@@ -20,7 +20,7 @@ resource "ibm_container_worker_pool_zone_attachment" "zones_pool" {
   count             =  "${length(var.zones) * var.worker_pools_num}"
   region            = "${var.region}"
   zone              = "${element(var.zones, count.index)}" 
-  resource_group_id = "${var.resource_group_id}"
+  resource_group_id = "${data.ibm_resource_group.rg.id}"
   cluster           = "${ibm_container_cluster.cluster.name}"
   worker_pool       = "${element(split("/",element(ibm_container_worker_pool.pool.*.id, count.index / length(var.zones))),1)}"
 

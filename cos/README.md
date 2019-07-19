@@ -1,6 +1,8 @@
 ## IBM Cloud Resource Instance Terraform module
 
 Terraform module which creates a cloud object storage (COS) instance on IBM Cloud.
+- Creates a COS instance
+- Creates service credentials for the COS instance created
 
 Reference: [ibm_resource_instance](https://ibm-cloud.github.io/tf-ibm-docs/v0.17.0/r/resource_instance.html)
 
@@ -24,7 +26,7 @@ module "cos" {
 }
 ```
 
-Alternatively, You can clone this repository and create your own "main.tf" in the root folder, like sample_main.tf, and give the local path as "cos" 
+Alternatively, You can clone this repository and create your own "main.tf" in the root folder, like main.tf in examples folder, and give the local path as "cos" 
 
 ```hcl
 module "cos" {
@@ -44,7 +46,7 @@ module "cos" {
     cos_plan              = "lite"
     cos_location          = "global"
     cos_tags              = ["terraform"]
-    resource_group_id     = "12345"
+    resource_group        = "default"
     cos_parameters        = { "HMAC" = true }
     cos_resource_key_parameters = { "HMAC" = true }
     cos_service_credentials_role    = "Reader"
@@ -74,7 +76,7 @@ module "cos" {
   cos_plan              = "${var.cos_plan}"
   cos_location          = "${var.cos_location}"
   cos_tags              = ["${var.tags}"]
-  resource_group_id     = "${data.ibm_resource_group.rg.id}"
+  resource_group        = "${var.resource_group}"
   cos_parameters        = "${var.cos_parameters}"
   cos_resource_key_parameters = "${var.cos_resource_key_parameters}"
   cos_service_credentials_role    = "${var.cos_service_credentials_role}"
@@ -95,21 +97,21 @@ output "cos_instance_id" {
 
 ## Examples
 
-* [sample main.tf is provided here](../sample_main.tf)
+* [example of main.tf is provided here](../examples/cos/main.tf)
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cos_name | name of the cloud object storage instance. | string | `""` | yes |
-| cos_location |  region for the instance to be created in.  | string | `global` | yes |
-| cos_plan |  current plan for COS.  | string | `standard` | yes |
+| cos_name | name of the cloud object storage instance. | string | `N/A` | yes |
+| cos_location |  region for the instance to be created in.  | string | `global` | no |
+| cos_plan |  current plan for COS.  | string | `standard` | no |
 | cos_tags | List of associated tags for the created instance. | `<list>` | `["terraform"]` | no |
-| cos_parameters | Arbitrary parameters to create instance. |  `<map>` | `{ "HMAC" = true }` | no |
+| cos_parameters | Arbitrary parameters to create instance. Creates a set of HMAC credentials by default. If set to `{}`, it'll create normal sevice credentials |  `<map>` | `{ "HMAC" = true }` | no |
 | cos_resource_key_parameters | Arbitrary parameters to create resource key. | `<map>` | `{ "HMAC" = true }` | no |
-| cos_service_credentials_role | The role defines permitted actions when accessing the COS service. | string | "Reader" | no |
-| resource_group_id | The ID of the resource group where you want to create the service. You can retrieve the value from data source ibm_resource_group. If not provided it creates the service in default resource group. | string | `""` | no |
+| cos_service_credentials_role | The role defines permitted actions when accessing the COS service. | string | `"Reader"` | no |
 | pfx | Prefix appended to start of the cos name. | string | `"tf"` | no |
+| resource_group | resource group name where you want to create the resource. If not provided it creates the resource in default resource group. | string | `"default"` | no |
 
 
 
