@@ -29,6 +29,7 @@ variable "tags" {
 variable "cluster_name" {
   type        = "string"
   description = "name of the cluster from where you want to ships logs."
+  default = ""
 }
 
 variable "sysdig" {

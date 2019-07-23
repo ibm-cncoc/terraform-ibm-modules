@@ -26,6 +26,7 @@ variable "tags" {
 variable "cluster_name" {
   type        = "string"
   description = "name of the cluster from where you want to ships logs. Giving cluster name will install the logdna-agent in your cluster. Giving it as empty will not install logdna-agent"
+  default = ""
 }
 
 variable "logdna_details" {
