@@ -5,6 +5,7 @@ variable ibm_bx_api_key {}
 variable "resource_group" {
     type = "string"
     description = "ibm cloud resoure group"
+    default = "default"
 
 }
 

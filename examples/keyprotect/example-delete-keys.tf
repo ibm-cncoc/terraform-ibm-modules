@@ -28,3 +28,9 @@ module "keyprotect" {
   delete_keys       = true # Allows deletion of all keys 
 }
 
+output "keyprotect_id" {
+  value = "${module.keyprotect.keyprotect_id}"
+}
+output "keyprotect_name" {
+  value = "${module.keyprotect.keyprotect_name}"
+}

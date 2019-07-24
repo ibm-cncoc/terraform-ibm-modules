@@ -62,7 +62,7 @@ resource null_resource "keyprotect_enable" {
       KEYPROTECT                  = "${ibm_resource_instance.key_protect.0.id}"
       CLUSTER                     = "${ibm_container_cluster.cluster.name}"
       REGION                      = "${var.region}"
-      RESOURCE_GROUP_ID           = "${data.ibm_resource_group.rg.id}"
+      RESOURCE_GROUP              = "${var.resource_group}"
     }
   }
     depends_on = [
