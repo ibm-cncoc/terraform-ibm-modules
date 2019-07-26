@@ -41,16 +41,20 @@ module "vpc" {
 
 
 output "vpc_id" {
-  value = "${module.vpc.vpc_id}"
+    value = "${module.vpc.vpc_id}"
+}
+output "vpc_name" {
+    value = "${module.vpc.vpc_name}"
+}
+output "vpc_status" {
+    value = "${module.vpc.vpc_status}"
 }
 output "vpc_default_security_group" {
     value = "${module.vpc.vpc_default_security_group}"
 }
-
-output "vpc_status" {
-    value = "${module.vpc.vpc_status}"
+output "subnet_id"{
+    value = "${module.vpc.subnet_id}"
 }
-
 output "subnet_status"{
     value = "${module.vpc.subnet_status}"
 }
@@ -58,6 +62,14 @@ output "subnet_status"{
 output "public_gateway_status"{
     value = "${module.vpc.public_gateway_status}"
 }
-output "public_gateway_floating_ip_info" {
-  value = "${module.vpc.public_gateway_floating_ip_info}"
+
+output "public_gateway_id"{
+    value = "${module.vpc.public_gateway_id}"
+}
+
+output "public_gateway_floating_ip_info"{
+    value = "${module.vpc.public_gateway_floating_ip_info}"
+}
+output "vpc_new_security_group_id" {
+    value = "${module.vpc.vpc_new_security_group_id}"
 }
