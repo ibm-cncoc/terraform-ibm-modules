@@ -4,6 +4,10 @@ Terraform module which creates an IBM Cloud LogDNA Activity Tracker instance to 
 
 Reference: [ibm_resource_instance](https://ibm-cloud.github.io/tf-ibm-docs/v0.17.0/r/resource_instance.html)
 
+### Pre-requisites
+This module makes use of local-exec provisoners to execute bash scripts locally. The scripts use the following tools:
+- [IBM Cloud CLI plug-ins](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-getting-started)
+
 ## Source of Module using Github URL / Local Path
 
 Terraform will recognize unprefixed github.com URLs and interpret them automatically as Git repository sources.
@@ -47,26 +51,15 @@ module "logdnaat" {
   cf_org            = "org-name"
   cf_space          = "team-name"
   cluster_name      = "name-of-your-cluster"
+  install_agent     = true
 }
-```
 
-or call the module with variable arguments.
+output "logDNA_AT_instance_name" {
+  value = "${module.logdnaat.logDNA_AT_instance_name}"
+}
 
-```hcl
-module "logdnaat" {
-  source            = "github.com/ibm-client-success/terraform-ibm-modules.git//logdnaat"
-  pfx               = "${var.pfx}"
-  region            = "${var.region}"
-  resource_group    = "${var.resource_group}"
-  tags              = ["${var.tags}"]
-  logdnaat_details  = "${var.logdnaat_details}"
-  cf_org            = "${var.cf_org}"
-  cf_space          = "${var.cf_space}"
-  cluster_name      = "${var.cluster_name}"
-  }
-
-output "logDNA-AT-instance" {
-  value = "${module.logdnaat.logDNA-AT-instance}"
+output "logDNA_AT_instance_id" {
+  value = "${module.logdnaat.logDNA_AT_instance_id}"
 }
 ```
 
@@ -78,9 +71,10 @@ output "logDNA-AT-instance" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster_name | name of the cluster from where you want to ships logs. Giving cluster name will install the logDNA-AT agent in your cluster. Giving it as empty ("") will not install logDNA-AT agent." | string | `""` | no |
+| cluster_name | Name of the cluster from which you want to ship logs. Provide the cluster name and give `install_agent` as true to install the agent in your cluster. | string | `""` | no |
 | cf_org |ibm cloud cloud foundry org name | string | `N/A` | yes |
 | cf_space |ibm cloud cloud foundry space | string | `N/A` | yes |
+| install_agent | Setting it to true will install the agent on the cluster (mentioned in `cluster_name`) or otherwise. | string | `false` | no
 | logdnaat_details | LogDNA with Activity Tracker instance details | `<map>` | `{"name" = "at-logdna", "plan" = "lite" }` | no |
 | pfx | Prefix appended to start of the logdna-at instance name | string | `"tf"` | no |
 | region |  Region for the instance to be created in  | string | `"us-south"` | no |
@@ -93,13 +87,14 @@ output "logDNA-AT-instance" {
 
 | Name | Description |
 |------|-------------|
-| logDNA-AT-instance | name of the logdna-at instance|
+| logDNA_AT_instance_name | name of the logdna-at instance|
+| logDNA_AT_instance_id | id of the logdna-at instance
 
 
 #### Additional Info
 To Add agents to log sources like (Linux | Docker | Kubernetes) manually, [follow the individual instructions to install the LogDNA-AT agents](https://cloud.ibm.com/docs/services/Log-Analysis-with-LogDNA?topic=LogDNA-config_agent)
 
-To monitor user-initiated administrative activity made in your cluster, you can collect and forward audit logs to IBM Cloud Activity Tracker. Clusters generate two types of Activity Tracker events:
+To monitor user-initiated administrative activity made in your cluster, you can collect and forward audit logs to IBM Cloud Activity Tracker.
 Cluster management events are automatically generated and forwarded to Activity Tracker.
 
 Kubernetes API server audit events are automatically generated, but you must create a logging configuration so that Fluentd can forward these logs to Activity Tracker.

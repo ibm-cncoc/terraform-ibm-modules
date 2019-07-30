@@ -6,7 +6,6 @@ variable "resource_group" {
     type = "string"
     description = "ibm cloud resoure group"
     default = "default"
-
 }
 
 variable "kp_rootkey" {
@@ -22,3 +21,4 @@ variable "kp_rootkey" {
     "payload" = "" 
   }
 }
+

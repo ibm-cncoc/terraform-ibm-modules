@@ -24,7 +24,7 @@ resource "ibm_resource_key" "logdna_resourceKey" {
 }
 
 data "ibm_container_cluster_config" "ibmcluster_config" {
-  count             = "${var.cluster_name == "" ? 0 : 1}" 
+  count             = "${var.install_agent ? 1 : 0}" 
   cluster_name_id   = "${var.cluster_name}" # Use cluster name. Using "id" may give errors while initializing the kube provider, because "id" is a computed value
   config_dir        =  "${path.module}"
   download          = true
@@ -36,7 +36,7 @@ locals {
 }
 
 resource "null_resource" "logdna_agent_install" {
-  count             = "${var.cluster_name == "" ? 0 : 1}" 
+  count             = "${var.install_agent ? 1 : 0}" 
   provisioner "local-exec" {
     command = "bash ${path.module}/scripts/logdna.sh"
 

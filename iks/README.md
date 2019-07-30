@@ -15,7 +15,11 @@ For more info on getting started with IKS, [IBM Cloud Kubernetes Service](https:
 This module makes use of local-exec provisoners to execute bash scripts locally. The scripts use the following tools:
 - [curl](https://curl.haxx.se/)
 - [jq](https://stedolan.github.io/jq/)
-- [python](https://www.python.org/downloads/)
+- [IBM Cloud CLI plug-ins](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-getting-started)
+
+This module also makes use of a python script to poll the Master Satus of the IKS Cluster.
+- [Python >= 3.6](https://www.python.org/downloads/release/python-369/), [pip3](https://linuxize.com/post/how-to-install-pip-on-ubuntu-18.04/)
+
 
 ## Source of Module using Github URL / Local Path
 

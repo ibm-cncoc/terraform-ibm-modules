@@ -28,6 +28,8 @@ output "public_gateway_id"{
 output "public_gateway_floating_ip_info"{
     value = "${ibm_is_public_gateway.public_gateway.*.floating_ip}"
 }
+
 output "vpc_new_security_group_id" {
     value = "${ibm_is_security_group.security_group.id}"
 }
+

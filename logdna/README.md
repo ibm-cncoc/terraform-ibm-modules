@@ -6,6 +6,10 @@ Reference: [ibm_resource_instance](https://ibm-cloud.github.io/tf-ibm-docs/v0.17
 
 Module creates a LogDNA service and provides optional installation of logdna agent on the provided IKS cluster
 
+### Pre-requisites
+This module makes use of local-exec provisoners to execute bash scripts locally. The scripts use the following tools:
+- [IBM Cloud CLI plug-ins](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-getting-started)
+
 ## Source of Module using Github URL / Local Path
 
 Terraform will recognize unprefixed github.com URLs and interpret them automatically as Git repository sources.
@@ -46,21 +50,8 @@ module "logdna" {
   resource_group    = "default"
   tags              = ["terraform"]
   logdna_details    = {"name"="logdna", "plan"="lite"}
-  cluster_name      = "name-of-your-cluster"
-}
-```
-
-or call the module with variable arguments.
-
-```hcl
-module "logdna" {
-  source            = "github.com/ibm-client-success/terraform-ibm-modules.git//logdna"
-  pfx               = "${var.pfx}"
-  region            = "${var.region}"
-  resource_group    = "${var.resource_group}"
-  tags              = ["${var.tags}"]
-  logdna_details    = "${var.logdna_details}"
-  cluster_name      = "${var.cluster_name}"
+  cluster_name      = "name-of-cluster"
+  install_agent     = true
 }
 ```
 
@@ -72,7 +63,8 @@ module "logdna" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster_name | name of the cluster from where you want to ships logs. Giving cluster name will install the logdna-agent in your cluster. Giving it as empty ("") will not install logdna-agent." | string | `""` | no |
+| cluster_name | Name of the cluster from which you want to ship logs. Provide the cluster name and give `install_agent` as true to install the agent in your cluster. | string | `""` | no |
+| install_agent | Setting it to true will install the agent on the cluster (mentioned in `cluster_name`) or otherwise. | string | `false` | no
 | logdna_details | LogDNA instance details | `<map>` | `{"name"="logdna", "plan"="lite"}` | no |
 | pfx | Prefix appended to start of the logdna instance name | string | `"tf"` | no |
 | resource_group | resource group name where you want to create the resource. If not provided it creates the resource in default resource group. | string |`"default"` | no |
@@ -83,7 +75,8 @@ module "logdna" {
 
 | Name | Description |
 |------|-------------|
-| logDNA-instance | name of the logdna instance|
+| logDNA_instance_name | name of the logdna instance|
+| logDNA_instance_id | id of the logdna instance|
 
 
 #### Additional Info

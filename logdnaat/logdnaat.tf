@@ -12,7 +12,7 @@ resource "ibm_resource_instance" "logdnaat" {
 }
 
 resource "null_resource" "logdnaat_agent_install" {
-  count             = "${var.cluster_name == "" ? 0 : 1}" 
+  count             = "${var.install_agent ? 1 : 0}" 
   provisioner "local-exec" {
   when = "create"
   command ="ibmcloud cs logging-config-create --cluster ${var.cluster_name} --logsource kube-audit --org '${var.cf_org}' --space ${var.cf_space}"

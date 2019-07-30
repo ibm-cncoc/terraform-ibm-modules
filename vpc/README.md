@@ -100,14 +100,23 @@ module "vpc" {
 }
 
 output "vpc_id" {
-  value = "${module.vpc.vpc_id}"
+    value = "${module.vpc.vpc_id}"
 }
-output "vpc_default_security_group" {
-    value = "${module.vpc.vpc_default_security_group}"
+
+output "vpc_name" {
+    value = "${module.vpc.vpc_name}"
 }
 
 output "vpc_status" {
     value = "${module.vpc.vpc_status}"
+}
+
+output "vpc_default_security_group" {
+    value = "${module.vpc.vpc_default_security_group}"
+}
+
+output "subnet_id"{
+    value = "${module.vpc.subnet_id}"
 }
 
 output "subnet_status"{
@@ -116,6 +125,18 @@ output "subnet_status"{
 
 output "public_gateway_status"{
     value = "${module.vpc.public_gateway_status}"
+}
+
+output "public_gateway_id"{
+    value = "${module.vpc.public_gateway_id}"
+}
+
+output "public_gateway_floating_ip_info"{
+    value = "${module.vpc.public_gateway_floating_ip_info}"
+}
+
+output "vpc_new_security_group_id" {
+    value = "${module.vpc.vpc_new_security_group_id}"
 }
 ```
 
@@ -153,11 +174,16 @@ output "public_gateway_status"{
 | Name | Description |
 |------|-------------|
 |vpc_id | The unique identifier of the VPC |
+|vpc_name | Name of the VPC created |
 |vpc_default_security_group | The unique identifier of the VPC default security group |
+|vpc_new_security_group_id | Id of the new security group |
 |vpc_status | The status of VPC |
+|subnet_id | Id of Subnet created |
 |subnet_status | The status of the subnet |
+|public_gateway_id | Id of Public Gateway created |
 |public_gateway_status| The status of the gateway |
 |public_gateway_floating_ip_info| Info of the floating IP created (List of maps) |
+
 
 
 ## Additional Info

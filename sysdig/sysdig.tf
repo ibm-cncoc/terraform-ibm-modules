@@ -29,7 +29,7 @@ locals {
 }
 
 data "ibm_container_cluster_config" "ibmcluster_config" {
-  count             = "${var.cluster_name == "" ? 0 : 1}" 
+  count             = "${var.install_agent ? 1 : 0}" 
   cluster_name_id   = "${var.cluster_name}" # Use cluster name. Using "id" may give errors while initializing the kube provider, because "id" is a computed value
   config_dir        = "${path.module}"
   download          = true
@@ -37,7 +37,7 @@ data "ibm_container_cluster_config" "ibmcluster_config" {
 }
 
 resource "null_resource" "sysdig_agent_install" {
-  count             = "${var.cluster_name == "" ? 0 : 1}" 
+  count             = "${var.install_agent ? 1 : 0}" 
   provisioner "local-exec" {
     command = "chmod +x ${path.module}/scripts/sysdig.sh && ${path.module}/scripts/sysdig.sh"
 

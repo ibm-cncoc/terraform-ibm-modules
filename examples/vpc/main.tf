@@ -8,8 +8,8 @@ provider "ibm" {
 }
 
 module "vpc" {
-  # source            = "../../vpc" # use if module is cloned locally
-  source            = "github.com/ibm-client-success/terraform-ibm-modules.git//vpc"
+  source            = "../../vpc" # use if module is cloned locally
+  # source            = "github.com/ibm-client-success/terraform-ibm-modules.git//vpc"
   vpc_name          = "vpc"
   subnet_name       = "subnet"
   secgroup_name     = "secgroup"
@@ -70,6 +70,13 @@ output "public_gateway_id"{
 output "public_gateway_floating_ip_info"{
     value = "${module.vpc.public_gateway_floating_ip_info}"
 }
+
 output "vpc_new_security_group_id" {
     value = "${module.vpc.vpc_new_security_group_id}"
 }
+
+output "vpc_new_security_group_id" {
+    value = "${module.vpc.vpc_new_security_group_id}"
+}
+
+

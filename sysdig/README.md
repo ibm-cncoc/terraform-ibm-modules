@@ -8,6 +8,12 @@ Module has resources that
 - Creates a Sysdig service on IBM Cloud
 - Supports optional installation of sysdig agents on IKS Cluster. Agent installation script reference [install-agent-k8s.sh](https://raw.githubusercontent.com/draios/sysdig-cloud-scripts/master/agent_deploy/IBMCloud-Kubernetes-Service/install-agent-k8s.sh)
 
+### Pre-requisites
+This module makes use of local-exec provisoners to execute bash scripts locally. The scripts use the following tools:
+- [curl](https://curl.haxx.se/)
+- [IBM Cloud CLI plug-ins](https://cloud.ibm.com/docs/cli/reference/ibmcloud?topic=cloud-cli-getting-started)
+
+
 ## Source of Module using Github URL / Local Path
 
 Terraform will recognize unprefixed github.com URLs and interpret them automatically as Git repository sources.
@@ -45,24 +51,19 @@ module "sysdig" {
   source            = "github.com/ibm-client-success/terraform-ibm-modules.git//sysdig"
   pfx               = "tf"
   region            = "us-south"
-  resource_group        = "default"
+  resource_group    = "default"
   tags              = ["terraform"]
   sysdig            = {name = "sysdig", plan ="lite", namespace = "ibm-observe-sysdig"}
-  cluster_name      = ""
+  cluster_name      = "name-of-cluster"
+  install_agent     = true
 }
-```
 
+output "sysdig_instance_name" {
+  value = "${module.sysdig.sysdig_instance_name}"
+}
 
-or call the module with variable arguments:
-```hcl
-module "sysdig" {
-  source            = "github.com/ibm-client-success/terraform-ibm-modules.git//sysdig"
-  pfx               = "${var.pfx}"
-  region            = "${var.region}"
-  resource_group        = "${var.resource_group}"
-  tags              = ["${var.tags}"]
-  sysdig            = "${var.sysdig}"
-  cluster_name      = "${var.cluster_name}"
+output "sysdig_instance_id" {
+  value = "${module.sysdig.sysdig_instance_id}"
 }
 ```
 
@@ -75,19 +76,20 @@ module "sysdig" {
 
 | Name | Description | Type | Default | Required |
 |------|-------------|:----:|:-----:|:-----:|
-| cluster_name | name of the cluster from where you want to ships logs. Giving cluster name will install the logDNA-AT agent in your cluster. Giving it as empty ("") will not install logDNA-AT agent." | string | `""` | no |
+| cluster_name | Name of the cluster from which you want to ship logs. Provide the cluster name and give `install_agent` as true to install the agent in your cluster. | string | `""` | no |
 | pfx | Prefix appended to start of the sysdig instance name. | string | `"tf"` | no |
 | region |  Region for the instance to be created in.  | string | `"us-south"` | no |
 | resource_group | resource group name where you want to create the resource. If not provided it creates the resource in default resource group. | string | `"default"` | no |
 | tags | List of associated tags for the created instance. | `<list>` | `["terraform"]` | no |
 | sysdig | Sysdig instance details | map | `{name = "sysdig", plan = "lite", namespace = "ibm-observe-sysdig"}` | no |
-
+| install_agent | Setting it to true will install the agent on the cluster (mentioned in `cluster_name`) or otherwise. | string | `false` | no
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| sysdig_instance_name | Name of the sysdif instance |
+| sysdig_instance_name | Name of the sysdig instance |
+|sysdig_instance_id | id of the sysdig instance |
 
 ## Authors
 

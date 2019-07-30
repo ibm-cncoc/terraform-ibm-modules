@@ -25,7 +25,7 @@ variable "tags" {
 
 variable "cluster_name" {
   type        = "string"
-  description = "name of the cluster from where you want to ships logs. Giving cluster name will install the logdna-agent in your cluster. Giving it as empty will not install logdna-agent"
+  description = "Name of the cluster from where you want to ships logs. Provide the cluster name and give install_agent as true to install the agent in your cluster. Default is empty string"
   default = ""
 }
 
@@ -37,4 +37,10 @@ variable "logdna_details" {
     name = "logdna"
     plan = "lite"   //This can also be "lite", "14-day" or "30-day"
   }
+}
+
+variable "install_agent" {
+  type = "string"
+  description = "Setting it to true will install the agent on the cluster (mentioned in cluster_name) or otherwise."
+  default = false
 }

@@ -6,13 +6,14 @@ module "logdnaat" {
   # source            = "../../logdnaat" #use if module is cloned locally
   source            = "github.com/ibm-client-success/terraform-ibm-modules.git//logdnaat"
   pfx               = "tf"
-  region            = "us-south"
-  resource_group    = "default"
+  region            = "${var.region}"
+  resource_group    = "${var.resource_group}"
   tags              = ["terraform"]
   logdnaat_details  = { name = "at-logdna", plan = "lite"}
   cf_org            = "${var.cf_org}"
   cf_space          = "${var.cf_space}"
-  cluster_name      = ""    #if you don't want to install logdna-AT agent in your cluster, keep it empty string
+  cluster_name      = "${var.cluster_name}"    #if you want to install the agent in your cluster, provide the name and set install_agent to true
+  install_agent     = true
 }
 
 # module "logdnaat" {
@@ -26,8 +27,13 @@ module "logdnaat" {
 #   cf_org            = "${var.cf_org}"
 #   cf_space          = "${var.cf_space}"
 #   cluster_name      = "${var.cluster_name}"
+#   install_agent     = "${var.install_agent}"
 #   }
 
-output "logDNA-AT-instance" {
-  value = "${module.logdnaat.logDNA-AT-instance}"
+output "logDNA_AT_instance_name" {
+  value = "${module.logdnaat.logDNA_AT_instance_name}"
+}
+
+output "logDNA_AT_instance_id" {
+  value = "${module.logdnaat.logDNA_AT_instance_id}"
 }

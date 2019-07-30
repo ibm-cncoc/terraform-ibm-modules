@@ -37,7 +37,7 @@ variable "cf_space" {
 
 variable "cluster_name" {
   type        = "string"
-  description = "name of the cluster where you want to store activity tracker logs. Giving cluster name will install the logdnaAT-agent in your cluster. Giving it as empty will not install logdnaAT-agent"
+  description = "Name of the cluster from where you want to ships logs. Provide the cluster name and give install_agent as true to install the agent in your cluster. Default is empty string"
   default = ""
 }
 
@@ -51,7 +51,11 @@ variable "logdnaat_details" {
   }
 }
 
-
+variable "install_agent" {
+  type = "string"
+  description = "setting it to true will install the agent in the cluster (mentioned in cluster_name) or otherwise"
+  default = false
+}
 
 
 

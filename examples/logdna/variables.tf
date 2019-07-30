@@ -10,7 +10,7 @@ variable "region" {
 variable "resource_group" {
     type = "string"
     description = "ibm cloud resoure group"
-    default = "phoenix"
+    default = "default"
 }
 
 variable "pfx" {
@@ -31,12 +31,8 @@ variable "cluster_name" {
   default = ""
 }
 
-variable "logdna_details" {
-  type = "map"
-  description = "LogDNA instance details"
-
-  default = {
-    name = "logdna"
-    plan = "lite"   //This can also be "lite", "14-day" or "30-day"
-  }
+variable "install_agent" {
+  type = "string"
+  description = "setting it to true will install the agent in the cluster (mentioned in cluster_name) or otherwise"
+  default = true
 }

@@ -53,7 +53,7 @@ output "cluster-name" {
 
 
 resource "null_resource" "check_cluster_status" {
-  # Export variables that the status check script needs
+  # sleep 30 to wait for any other operation (like kp enable) to take effect and change the Master Status
   # pip install python packages that script uses
   # Execute Script to check Master status of Cluster. 
   # If KP is enabled, the enabling process takes about 30 mins. So the script waits for the enabling to be done.
@@ -62,10 +62,10 @@ resource "null_resource" "check_cluster_status" {
 
   provisioner "local-exec" {
     command = <<EOT
-    sleep 10
-    pip install requests
-    pip install datetime
-    python ${path.module}/scripts/check_clusterstatus.py --apikey "${var.ibm_bx_api_key}" --rgid "${data.ibm_resource_group.rg.id}" --region "${var.region}" --cluster "${ibm_container_cluster.cluster.name}"
+    sleep 30
+    pip3 install requests
+    pip3 install datetime
+    python3 ${path.module}/scripts/check_clusterstatus.py --apikey "${var.ibm_bx_api_key}" --rgid "${data.ibm_resource_group.rg.id}" --region "${var.region}" --cluster "${ibm_container_cluster.cluster.name}"
 EOT
   }
 
