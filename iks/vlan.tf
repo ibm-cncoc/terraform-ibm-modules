@@ -19,7 +19,7 @@ resource "ibm_network_vlan" "private_vlan_new" {
 }
 
 resource "ibm_network_vlan" "public_vlan_new" {
-  count       = "${var.create_private_vlan ? length(var.zones) : 0}"
+  count       = "${var.create_public_vlan ? length(var.zones) : 0}"
   name        = "${var.pfx}-${element(var.zones, count.index)}-pub"
   datacenter  = "${element(var.zones, count.index)}"
   type        = "PUBLIC"
